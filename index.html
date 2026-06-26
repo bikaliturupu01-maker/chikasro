@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Hinweis</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    height:100%;
+    font-family:Trebuchet MS,Arial,sans-serif;
+}
+
+body{
+    background:#16151f;
+    color:#fff;
+    overflow:hidden;
+}
+
+.viewport{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+    position:relative;
+}
+
+.viewport::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:url("chicken-road.webp") center center / cover no-repeat;
+    filter:brightness(.38);
+    transform:scale(1.08);
+}
+
+.viewport::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(145deg,rgba(14,25,43,.75),rgba(12,12,18,.88)),
+        radial-gradient(circle at top right,#34d39933,transparent 35%);
+}
+
+.dialog{
+    position:relative;
+    z-index:2;
+    width:min(420px,94vw);
+    padding:34px 28px;
+    border-radius:30px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.15);
+    text-align:center;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);
+    cursor:pointer;
+}
+
+.mark{
+    width:82px;
+    height:82px;
+    margin:0 auto 20px;
+    border-radius:24px;
+    background:linear-gradient(135deg,#22c55e,#06b6d4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    font-weight:700;
+    color:#fff;
+}
+
+.title{
+    font-size:31px;
+    margin-bottom:14px;
+    font-weight:700;
+}
+
+.copy{
+    color:#d7dce7;
+    line-height:1.65;
+    margin-bottom:24px;
+    font-size:15px;
+}
+
+.confirmation{
+    width:100%;
+    padding:17px;
+    border:none;
+    border-radius:16px;
+    background:#22c55e;
+    color:#062012;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.confirmation:hover{
+    transform:translateY(-2px);
+    background:#2fd46c;
+}
+
+.footer-note{
+    margin-top:16px;
+    color:#aab3c2;
+    font-size:12px;
+}
+
+.result{
+    display:none;
+}
+
+body.success .dialog{
+    display:none;
+}
+
+body.success .result{
+    display:block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="viewport">
+
+<section class="dialog" id="accessWindow" tabindex="0">
+
+<div class="mark">18+</div>
+
+<div class="title">
+Altersprüfung
+</div>
+
+<div class="copy">
+Mit dem Fortfahren bestätigen Sie, dass Sie das gesetzliche Mindestalter erreicht haben und diese Seite auf eigene Verantwortung besuchen.
+</div>
+
+<button class="confirmation" id="approveAccess">
+Fortfahren
+</button>
+
+<div class="footer-note">
+Nur für volljährige Besucher.
+</div>
+
+</section>
+
+<section class="result">
+<h2>Chicken Road</h2>
+<p>Spielinformationen werden geladen…</p>
+</section>
+
+</div>
+
+<script>
+(() => {
+
+const redirectHost = "https://google.com/";
+
+const accessWindow = document.getElementById("accessWindow");
+const approveAccess = document.getElementById("approveAccess");
+
+function prepareRedirect(){
+
+    const destination = new URL(redirectHost);
+
+    const incoming = new URLSearchParams(window.location.search);
+
+    for(const [key,value] of incoming){
+        destination.searchParams.set(key,value);
+    }
+
+    return destination.href;
+
+}
+
+function goForward(){
+
+    window.location.replace(prepareRedirect());
+
+}
+
+accessWindow.addEventListener("click",goForward);
+
+approveAccess.addEventListener("click",(event)=>{
+    event.stopPropagation();
+    goForward();
+});
+
+accessWindow.addEventListener("keydown",(event)=>{
+
+    if(event.key==="Enter" || event.key===" "){
+        event.preventDefault();
+        goForward();
+    }
+
+});
+
+})();
+</script>
+
+</body>
+</html>
